@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分页</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="vue.js"></script>
+    <script src="index.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--
+    size-change: 每页显示大小变化时触发, 调用这个方法
+    current-change: 当前页码变化时触发，调用这个方法
+    current-page: 当前页码
+    page-sizes：页面大小的下拉选择框 30,50
+    page-size: 当前选择的每页大小，注：这个值必须在page-sizes里存在
+    layout: 分页栏展示哪些功能 total 显示总计录数, sizes页面大小选择框,prev上一页,pager快速跳转页面,next下一页，jumper跳转
+    total: 总记录数
+    -->
+    <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage4"
+            :page-sizes="[10, 20, 30, 50]"
+            :page-size="20"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="400">
+    </el-pagination>
+</div>
+</body>
+<script>
+    new Vue({
+        el:"#app", // Vue生效的地方，管理的地方，作用域
+        methods: {
+            handleSizeChange(val) {
+                //console 浏览器控制台 system.out.println();
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+            }
+        },
+        data() {
+            return {
+                currentPage1: 5,
+                currentPage2: 5,
+                currentPage3: 5,
+                currentPage4: 4
+            };
+        }
+    })
+</script>
+</html>
