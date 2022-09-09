@@ -1,0 +1,47 @@
+name: Gitee repos mirror periodic job
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/github_to_gitee.yml'
+    # Runs at every pull requests submitted in master branch
+    branches: [ master ]
+  schedule:
+    # Runs at 01:00 UTC (9:00 AM Beijing) every day
+    - cron:  '0 0/2 * * *'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Mirror the Gitee organization repos to Github.
+        uses: Yikun/hub-mirror-action@v1.0
+        with:
+          src: gitee/fengyixing
+          dst: github/fengyixing
+          dst_key: ${{ secrets.HUB_PRIVATE_KEY }}
+          dst_token:  ${{ secrets.GITHUB_TOKEN }}
+          account_type: org
+          timeout: 600
+          debug: true
+          white_list: "test-pre-commit"
+
+      - name: Mirror the Github organization repos to Gitee.
+        uses: Yikun/hub-mirror-action@v1.0
+        with:
+          src: github/fengyixing
+          dst: gitee/fengyixing
+          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
+          dst_token:  ${{ secrets.GITEE_TOKEN }}
+          account_type: org
+          timeout: 600
+          debug: true
+          force_update: true
+          white_list: "shizhan1,mytest,mytest2"
+      - name: Debug repo owner
+        run: |
+          echo ${{ github.repository_owner }}
+          echo ${{ github.actor }}
